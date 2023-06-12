@@ -21,6 +21,9 @@ namespace Root
         private float _xRotation;
         private float _ySensitivity = 30f;
         private float _xSensitivity = .1f;
+        private float maxVelDelta = 1;
+        [SerializeField]
+        private Rigidbody _rb;
 
         void OnEnable()
         {
@@ -63,11 +66,35 @@ namespace Root
             _input.Player.Disable();
         }
 
-        void Update()
+        void FixedUpdate()
         {
-            //Update the movement of the player
-            transform.position += new Vector3(Movement.x * Time.deltaTime * _playerStats.Speed, 0, Movement.y * Time.deltaTime * _playerStats.Speed);
+            Move();
 
+            Rotate();
+        }
+
+        private void Move()
+        {
+            //Find target velocity
+            Vector3 currentVelocity = _rb.velocity;
+            Vector3 targetVelocity = new Vector3(Movement.x, 0, Movement.y);
+            targetVelocity *= _playerStats.Speed;
+
+            //Align directions
+            targetVelocity = transform.TransformDirection(targetVelocity);
+
+            //Calculate the forces 
+            Vector3 velocityDelta = targetVelocity - currentVelocity;
+
+            //Limit force 
+            Vector3.ClampMagnitude(velocityDelta, maxVelDelta);
+
+            //Apply force
+            _rb.AddForce(velocityDelta, ForceMode.VelocityChange);
+        }
+
+        private void Rotate()
+        {
             //update the rotation of the player according to the mousePos
             transform.Rotate(Vector3.up * Aim.x * _xSensitivity);
             _xRotation -= Aim.y * Time.deltaTime * _ySensitivity;

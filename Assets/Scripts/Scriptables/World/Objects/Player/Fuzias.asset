@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7888fc48e0adce74e9440f3503d2799d, type: 3}
   m_Name: Fuzias
   m_EditorClassIdentifier: 
-  Speed: 10
-  MaxHp: 10
   Id: 0
+  Speed: 4
+  MaxHp: 10
