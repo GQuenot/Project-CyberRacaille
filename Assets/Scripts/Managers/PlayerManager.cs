@@ -11,19 +11,17 @@ namespace Root
         private PlayerInput _input;
         [SerializeField]
         private PlayerStats _playerStats;
-        [SerializeField]
-        private Canvas _inventoryCanvas;
         [HideInInspector]
         public Vector2 Movement { get; private set; } = Vector2.zero;
         [HideInInspector]
         public Vector2 Aim { get; private set; } = Vector2.zero;
         private Camera _camera;
         private float _xRotation;
-        private float _ySensitivity = 30f;
-        private float _xSensitivity = .1f;
         private float maxVelDelta = 1;
         [SerializeField]
         private Rigidbody _rb;
+        [SerializeField] Animator _weaponAnimator;
+        [SerializeField] PlayerSettings _playerSettings;
 
         void OnEnable()
         {
@@ -37,8 +35,13 @@ namespace Root
             _input.Player.Aim.performed += SetLook;
             _input.Player.Aim.canceled += SetLook;
 
-            _input.Player.Inventory.started += ToggleInventory;
+            _input.Player.Attack.started += PerformAttack;
 
+        }
+
+        private void PerformAttack(InputAction.CallbackContext context)
+        {
+            _weaponAnimator.SetTrigger("SwingTrigger");
         }
 
         void Start()
@@ -49,11 +52,6 @@ namespace Root
         private void SetLook(InputAction.CallbackContext context)
         {
             Aim = context.ReadValue<Vector2>();
-        }
-
-        private void ToggleInventory(InputAction.CallbackContext context)
-        {
-            _inventoryCanvas.gameObject.SetActive(!_inventoryCanvas.isActiveAndEnabled);
         }
 
         private void SetMove(InputAction.CallbackContext context)
@@ -96,8 +94,9 @@ namespace Root
         private void Rotate()
         {
             //update the rotation of the player according to the mousePos
-            transform.Rotate(Vector3.up * Aim.x * _xSensitivity);
-            _xRotation -= Aim.y * Time.deltaTime * _ySensitivity;
+            transform.Rotate(Vector3.up * Aim.x * _playerSettings.XSensibility);
+
+            _xRotation -= Aim.y * Time.deltaTime * _playerSettings.YSensibility;
             _xRotation = Mathf.Clamp(_xRotation, -80, 80);
             _camera.transform.localRotation = Quaternion.Euler(_xRotation, 0, 0);
         }
