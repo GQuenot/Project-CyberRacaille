@@ -9,10 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7888fc48e0adce74e9440f3503d2799d, type: 3}
-  m_Name: Fuzias
+  m_Script: {fileID: 11500000, guid: b2ec707e9f0277a4b9889770c9740fbf, type: 3}
+  m_Name: Resume
   m_EditorClassIdentifier: 
-  Id: 0
-  Speed: 4
-  MaxHp: 10
-  JumpForce: 5

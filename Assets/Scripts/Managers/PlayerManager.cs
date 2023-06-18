@@ -22,6 +22,7 @@ namespace Root
         private Rigidbody _rb;
         [SerializeField] Animator _weaponAnimator;
         [SerializeField] PlayerSettings _playerSettings;
+        private bool _isTouchingGround = false;
 
         void OnEnable()
         {
@@ -37,6 +38,17 @@ namespace Root
 
             _input.Player.Attack.started += PerformAttack;
 
+            _input.Player.Jump.started += PerformJump;
+
+        }
+
+        private void PerformJump(InputAction.CallbackContext context)
+        {
+            if (_isTouchingGround)
+            {
+                _rb.AddForce(new Vector3(0, 1 * _playerStats.JumpForce, 0), ForceMode.Impulse);
+                _isTouchingGround = false;
+            }
         }
 
         private void PerformAttack(InputAction.CallbackContext context)
@@ -64,6 +76,18 @@ namespace Root
             _input.Player.Disable();
         }
 
+        private void OnCollisionEnter(Collision collision)
+        {
+            //Important to name every ground object Ground
+            if (collision.gameObject.CompareTag("Ground"))
+            {
+                _isTouchingGround = true;
+            } else if (collision == null)
+            {
+                _isTouchingGround = false;
+            }
+        }
+
         void FixedUpdate()
         {
             Move();
@@ -75,8 +99,10 @@ namespace Root
         {
             //Find target velocity
             Vector3 currentVelocity = _rb.velocity;
-            Vector3 targetVelocity = new Vector3(Movement.x, 0, Movement.y);
-            targetVelocity *= _playerStats.Speed;
+            //Vector3 targetVelocity = new Vector3(Movement.x, 0, Movement.y);
+            Vector3 targetVelocity = new Vector3(Movement.x, currentVelocity.y, Movement.y);
+            
+            targetVelocity = new Vector3(targetVelocity.x * _playerStats.Speed, targetVelocity.y, targetVelocity.z * _playerStats.Speed);
 
             //Align directions
             targetVelocity = transform.TransformDirection(targetVelocity);

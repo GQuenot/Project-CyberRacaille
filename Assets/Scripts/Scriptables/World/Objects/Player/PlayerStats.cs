@@ -10,5 +10,7 @@ namespace Root
         public int Id;
         public float Speed = 20.0f;
         public int MaxHp = 10;
+
+        public float JumpForce;
     } 
 }

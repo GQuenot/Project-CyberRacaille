@@ -55,6 +55,15 @@ namespace Root
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""b4de2a68-73ac-48e3-a2af-c46e6ec85e27"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -134,6 +143,17 @@ namespace Root
                     ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""96e20832-2cae-4a8b-9ead-da6f363dab42"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -193,6 +213,7 @@ namespace Root
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
             m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
             m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
+            m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Inventory = m_UI.FindAction("Inventory", throwIfNotFound: true);
@@ -261,6 +282,7 @@ namespace Root
         private readonly InputAction m_Player_Move;
         private readonly InputAction m_Player_Aim;
         private readonly InputAction m_Player_Attack;
+        private readonly InputAction m_Player_Jump;
         public struct PlayerActions
         {
             private @PlayerInput m_Wrapper;
@@ -268,6 +290,7 @@ namespace Root
             public InputAction @Move => m_Wrapper.m_Player_Move;
             public InputAction @Aim => m_Wrapper.m_Player_Aim;
             public InputAction @Attack => m_Wrapper.m_Player_Attack;
+            public InputAction @Jump => m_Wrapper.m_Player_Jump;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -286,6 +309,9 @@ namespace Root
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -299,6 +325,9 @@ namespace Root
                 @Attack.started -= instance.OnAttack;
                 @Attack.performed -= instance.OnAttack;
                 @Attack.canceled -= instance.OnAttack;
+                @Jump.started -= instance.OnJump;
+                @Jump.performed -= instance.OnJump;
+                @Jump.canceled -= instance.OnJump;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -375,6 +404,7 @@ namespace Root
             void OnMove(InputAction.CallbackContext context);
             void OnAim(InputAction.CallbackContext context);
             void OnAttack(InputAction.CallbackContext context);
+            void OnJump(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {
