@@ -11,8 +11,8 @@ namespace Root
         {
             if (collider.CompareTag("Ennemi"))
             {
-                EnnemiBehavior ennemiBehavior = collider.gameObject.GetComponent<EnnemiBehavior>();
-                ennemiBehavior.EnnemiReference.CurrentHp -= 8;
+                EnemyBehavior ennemiBehavior = collider.gameObject.GetComponent<EnemyBehavior>();
+                ennemiBehavior.EnemyReference.CurrentHp -= 8;
                 ennemiBehavior.LifeBar.SetLifeBarSlider();
                 ennemiBehavior.CheckIfAlive();
             }

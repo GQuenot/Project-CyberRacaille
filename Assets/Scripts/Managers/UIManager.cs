@@ -23,8 +23,9 @@ namespace Root
         }
 
         private PlayerInput _input;
-        [SerializeField] private Canvas _inventoryCanvas;
-        [SerializeField] private Canvas _optionsCanvas;
+        private GameObject _currentDisplayed;
+        [SerializeField] private GameObject _inventory;
+        [SerializeField] private GameObject _options;
 
         void OnEnable()
         {
@@ -38,12 +39,29 @@ namespace Root
 
         private void ToggleOptions(InputAction.CallbackContext context)
         {
-            _optionsCanvas.gameObject.SetActive(!_optionsCanvas.isActiveAndEnabled);
+            SetState(_options);
+            GameManager.Instance.PauseTheGame();
         }
 
         private void ToggleInventory(InputAction.CallbackContext context)
         {
-            _inventoryCanvas.gameObject.SetActive(!_inventoryCanvas.isActiveAndEnabled);
+            SetState(_inventory);
+        }
+
+        void SetState(GameObject gameObject)
+        {
+            if (_currentDisplayed != null)
+            {   
+                //Desactivate the last object
+                _currentDisplayed.SetActive(false);
+                _currentDisplayed = gameObject;
+                //Then activate it again
+                _currentDisplayed.SetActive(true);
+            } else
+            {
+                _currentDisplayed = gameObject;
+                _currentDisplayed.SetActive(true);
+            }
         }
     }
 }

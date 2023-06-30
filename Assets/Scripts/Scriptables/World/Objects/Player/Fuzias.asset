@@ -16,3 +16,8 @@ MonoBehaviour:
   Speed: 4
   MaxHp: 10
   JumpForce: 5
+  Level: 10
+  CurrentXp: 920
+  TotalXp: 0
+  BaseXp: 100
+  _necessaryXp: 0

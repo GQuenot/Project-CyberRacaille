@@ -8,7 +8,7 @@ namespace Root
 {
     public class LifeBar : MonoBehaviour
     {
-        [SerializeField] private EnnemiReference _ennemiReference;
+        [SerializeField] private EnemyReference _enemyReference;
         private Slider _lifeSlider;
         // Start is called before the first frame update
         void Awake()
@@ -18,7 +18,7 @@ namespace Root
 
         public void SetLifeBarSlider()
         {
-            _lifeSlider.value = (float)_ennemiReference.CurrentHp / (float)_ennemiReference.MaxHp;
+            _lifeSlider.value = (float)_enemyReference.CurrentHp / (float)_enemyReference.MaxHp;
         }
     }
 }

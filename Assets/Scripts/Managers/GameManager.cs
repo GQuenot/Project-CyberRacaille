@@ -31,19 +31,17 @@ namespace Root
         {
             _playerInput = new PlayerInput();
             _playerInput.Enable();
-
-            _playerInput.UI.Options.started += PauseTheGame;
         }
 
-        private void PauseTheGame(InputAction.CallbackContext context)
+        public void PauseTheGame()
         {
             if (_isPaused) 
             {
-                _isPaused = false;
+                ResumeTheTime();
                 _resumeEvent.Raise();
             } else
             {
-                _isPaused = true;
+                PauseTheTime();
                 _pauseEvent.Raise();
             }
         }
